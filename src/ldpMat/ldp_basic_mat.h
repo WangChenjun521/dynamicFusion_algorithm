@@ -37,7 +37,7 @@ class ldp_basic_mat
 {
 public:
 	const static size_t NUM_ELEMENTS = N*M;
-protected:
+public:
 	T _data[NUM_ELEMENTS];
 public:
 	/**
