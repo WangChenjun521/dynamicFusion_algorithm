@@ -600,8 +600,8 @@ public:
 		ldp_basic_mat<typename type_promote<T,E>::type, 2, K> out;	
 		for(size_t i=0; i<K; i++)
 		{
-			out(i, 0) = _data[0]*rhs(i,0) + _data[2]*rhs(i,1);
-			out(i, 1) = _data[1]*rhs(i,0) + _data[3]*rhs(i,1);
+			out(i, 0) = this._data[0]*rhs(i,0) + this._data[2]*rhs(i,1);
+			out(i, 1) = this._data[1]*rhs(i,0) + this._data[3]*rhs(i,1);
 		}
 		return out;
 	}
@@ -609,10 +609,10 @@ public:
 	 ldp_basic_mat2<typename type_promote<T,E>::type> operator * (const ldp_basic_mat<E,2,2>& rhs)const	
 	{																													
 		ldp_basic_mat2<typename type_promote<T,E>::type> out;												
-		out._data[0] = _data[0] * rhs[0] + _data[2] * rhs[1];										
-		out._data[1] = _data[1] * rhs[0] + _data[3] * rhs[1];										
-		out._data[2] = _data[0] * rhs[2] + _data[2] * rhs[3];										
-		out._data[3] = _data[1] * rhs[2] + _data[3] * rhs[3];
+		out._data[0] = this._data[0] * rhs[0] + this._data[2] * rhs[1];										
+		out._data[1] = this._data[1] * rhs[0] + this._data[3] * rhs[1];										
+		out._data[2] = this._data[0] * rhs[2] + this._data[2] * rhs[3];										
+		out._data[3] = this._data[1] * rhs[2] + this._data[3] * rhs[3];
 		return out;																										
 	}
 
@@ -620,8 +620,8 @@ public:
 	ldp_basic_vec2<typename type_promote<T,E>::type> operator * (const ldp_basic_vec<E,2>& rhs)const	
 	{																													
 		ldp_basic_vec2<typename type_promote<T,E>::type> out;												
-		out[0] = _data[0] * rhs[0] + _data[2] * rhs[1];												
-		out[1] = _data[1] * rhs[0] + _data[3] * rhs[1];	
+		out[0] = this._data[0] * rhs[0] + this._data[2] * rhs[1];												
+		out[1] = this._data[1] * rhs[0] + this._data[3] * rhs[1];	
 		return out;																										
 	}	
 	ldp_basic_mat2<T> operator * (const T& rhs)const										
@@ -638,7 +638,7 @@ public:
 	}
 	ldp_basic_mat2<T>& operator *= (const T& x)
 	{
-		for(size_t i=0; i<NUM_ELEMENTS; i++)
+		for(size_t i=0; i<this.NUM_ELEMENTS; i++)
 			(*this)[i] *= x;
 		return *this;
 	}
@@ -647,7 +647,7 @@ public:
 	* */
 	T det()const
 	{
-		return _data[0]*_data[3] - _data[1]*_data[2];
+		return this._data[0]*this._data[3] - this._data[1]*this._data[2];
 	}
 	/**
 	* Matrix Inverse
@@ -678,15 +678,15 @@ public:
 	* */
 	void eig(ldp_basic_vec<T,2>& eigVals, ldp_basic_mat<T,2,2>& eigVecs)const
 	{
-		T b=-trace();
+		T b=-this.trace();
 		T c=det();
 		T delta = sqrt(b*b-4*c);
 		eigVals[0]=(-b+delta)*T(0.5);
 		eigVals[1]=(-b-delta)*T(0.5);
 		if(eigVals[0] < eigVals[1])
 			std::swap(eigVals[0], eigVals[1]);
-		ldp_basic_vec2<T> v1(_data[0]-eigVals[1],_data[1]);
-		ldp_basic_vec2<T> v2(_data[0]-eigVals[0],_data[1]);
+		ldp_basic_vec2<T> v1(this._data[0]-eigVals[1],this._data[1]);
+		ldp_basic_vec2<T> v2(this._data[0]-eigVals[0],this._data[1]);
 		T len1 = v1.sqrLength(), len2 = v2.sqrLength();
 		if(len1==0 && len2==0)
 		{
@@ -705,7 +705,7 @@ public:
 	}
 	void eig(ldp_basic_vec<T,2>& eigVals)const
 	{
-		T b=-trace();
+		T b=-this.trace();
 		T c=det();
 		T delta = sqrt(b*b-4*c);
 		eigVals[0]=(-b+delta)*T(0.5);
@@ -742,40 +742,40 @@ public:
 	* Operator: * with mat and vec
 	* */
 	template<typename E, size_t K>																								
-	typename ldp_basic_mat<typename type_promote<T,E>::type, 3, K> operator * (const ldp_basic_mat<E,3,K>& rhs)const	
+	ldp_basic_mat<typename type_promote<T,E>::type, 3, K> operator * (const ldp_basic_mat<E,3,K>& rhs)const	
 	{																													
-		typename ldp_basic_mat<typename type_promote<T,E>::type, 3, K> out;	
+		ldp_basic_mat<typename type_promote<T,E>::type, 3, K> out;	
 		for(size_t i=0; i<K; i++)
 		{
-			out(0, i) = _data[0]*rhs(0,i) + _data[3]*rhs(1,i) + _data[6]*rhs(2,i);
-			out(1, i) = _data[1]*rhs(0,i) + _data[4]*rhs(1,i) + _data[7]*rhs(2,i);
-			out(2, i) = _data[2]*rhs(0,i) + _data[5]*rhs(1,i) + _data[8]*rhs(2,i);
+			out(0, i) = this._data[0]*rhs(0,i) + this._data[3]*rhs(1,i) + this._data[6]*rhs(2,i);
+			out(1, i) = this._data[1]*rhs(0,i) + this._data[4]*rhs(1,i) + this._data[7]*rhs(2,i);
+			out(2, i) = this._data[2]*rhs(0,i) + this._data[5]*rhs(1,i) + this._data[8]*rhs(2,i);
 		}		 
 		return out;
 	}
 	template<typename E>																								
-	typename ldp_basic_mat3<typename type_promote<T,E>::type> operator * (const ldp_basic_mat<E,3,3>& rhs)const	
+	ldp_basic_mat3<typename type_promote<T,E>::type> operator * (const ldp_basic_mat<E,3,3>& rhs)const	
 	{																													
-		typename ldp_basic_mat3<typename type_promote<T,E>::type> out;												
-		out[0] = _data[0] * rhs[0] + _data[3] * rhs[1] + _data[6] * rhs[2];				
-		out[1] = _data[1] * rhs[0] + _data[4] * rhs[1] + _data[7] * rhs[2];				
-		out[2] = _data[2] * rhs[0] + _data[5] * rhs[1] + _data[8] * rhs[2];					
-		out[3] = _data[0] * rhs[3] + _data[3] * rhs[4] + _data[6] * rhs[5];				
-		out[4] = _data[1] * rhs[3] + _data[4] * rhs[4] + _data[7] * rhs[5];				
-		out[5] = _data[2] * rhs[3] + _data[5] * rhs[4] + _data[8] * rhs[5];					
-		out[6] = _data[0] * rhs[6] + _data[3] * rhs[7] + _data[6] * rhs[8];				
-		out[7] = _data[1] * rhs[6] + _data[4] * rhs[7] + _data[7] * rhs[8];				
-		out[8] = _data[2] * rhs[6] + _data[5] * rhs[7] + _data[8] * rhs[8];	
+		ldp_basic_mat3<typename type_promote<T,E>::type> out;												
+		out[0] = this._data[0] * rhs[0] + this._data[3] * rhs[1] + this._data[6] * rhs[2];				
+		out[1] = this._data[1] * rhs[0] + this._data[4] * rhs[1] + this._data[7] * rhs[2];				
+		out[2] = this._data[2] * rhs[0] + this._data[5] * rhs[1] + this._data[8] * rhs[2];					
+		out[3] = this._data[0] * rhs[3] + this._data[3] * rhs[4] + this._data[6] * rhs[5];				
+		out[4] = this._data[1] * rhs[3] + this._data[4] * rhs[4] + this._data[7] * rhs[5];				
+		out[5] = this._data[2] * rhs[3] + this._data[5] * rhs[4] + this._data[8] * rhs[5];					
+		out[6] = this._data[0] * rhs[6] + this._data[3] * rhs[7] + this._data[6] * rhs[8];				
+		out[7] = this._data[1] * rhs[6] + this._data[4] * rhs[7] + this._data[7] * rhs[8];				
+		out[8] = this._data[2] * rhs[6] + this._data[5] * rhs[7] + this._data[8] * rhs[8];	
 		return out;																										
 	}
 
 	template<typename E>																								
-	typename ldp_basic_vec3<typename type_promote<T,E>::type> operator * (const ldp_basic_vec<E,3>& rhs)const	
+	ldp_basic_vec3<typename type_promote<T,E>::type> operator * (const ldp_basic_vec<E,3>& rhs)const	
 	{																													
-		typename ldp_basic_vec3<typename type_promote<T,E>::type> out;												
-		out[0] = _data[0] * rhs[0] + _data[3] * rhs[1] + _data[6] * rhs[2];									
-		out[1] = _data[1] * rhs[0] + _data[4] * rhs[1] + _data[7] * rhs[2];								
-		out[2] = _data[2] * rhs[0] + _data[5] * rhs[1] + _data[8] * rhs[2];
+		ldp_basic_vec3<typename type_promote<T,E>::type> out;												
+		out[0] = this._data[0] * rhs[0] + this._data[3] * rhs[1] + this._data[6] * rhs[2];									
+		out[1] = this._data[1] * rhs[0] + this._data[4] * rhs[1] + this._data[7] * rhs[2];								
+		out[2] = this._data[2] * rhs[0] + this._data[5] * rhs[1] + this._data[8] * rhs[2];
 		return out;																										
 	}
 	ldp_basic_mat3<T> operator * (const T& rhs)const										
@@ -792,7 +792,7 @@ public:
 	}
 	ldp_basic_mat3<T>& operator *= (const T& x)
 	{
-		for(size_t i=0; i<NUM_ELEMENTS; i++)
+		for(size_t i=0; i<this.NUM_ELEMENTS; i++)
 			(*this)[i] *= x;
 		return *this;
 	}
@@ -801,9 +801,9 @@ public:
 	* */
 	T det()const
 	{
-		return 		_data[0]*(_data[4]*_data[8] - _data[7]*_data[5]) 
-				-	_data[3]*(_data[1]*_data[8] - _data[7]*_data[2])
-				+	_data[6]*(_data[1]*_data[5] - _data[4]*_data[2]);
+		return 		this._data[0]*(this._data[4]*this._data[8] - this._data[7]*this._data[5]) 
+				-	this._data[3]*(this._data[1]*this._data[8] - this._data[7]*this._data[2])
+				+	this._data[6]*(this._data[1]*this._data[5] - this._data[4]*this._data[2]);
 	}
 	/**
 	* Matrix Inverse
@@ -902,27 +902,27 @@ public:
 	* Operator: * with mat and vec
 	* */
 	template<typename E, size_t K>																								
-	typename ldp_basic_mat<typename type_promote<T,E>::type, 4, K> operator * (const ldp_basic_mat<E,4,K>& rhs)const	
+	ldp_basic_mat<typename type_promote<T,E>::type, 4, K> operator * (const ldp_basic_mat<E,4,K>& rhs)const	
 	{																													
-		typename ldp_basic_mat<typename type_promote<T,E>::type, 4, K> out;	
+		ldp_basic_mat<typename type_promote<T,E>::type, 4, K> out;	
 		for(size_t i=0; i<K; i++)
 		{
-			out(0, i) = _data[0]*rhs(0,i) + _data[4]*rhs(1,i) + _data[8 ]*rhs(2,i) + _data[12]*rhs(3,i);
-			out(1, i) = _data[1]*rhs(0,i) + _data[5]*rhs(1,i) + _data[9 ]*rhs(2,i) + _data[13]*rhs(3,i);
-			out(2, i) = _data[2]*rhs(0,i) + _data[6]*rhs(1,i) + _data[10]*rhs(2,i) + _data[14]*rhs(3,i);
-			out(3, i) = _data[3]*rhs(0,i) + _data[7]*rhs(1,i) + _data[11]*rhs(2,i) + _data[15]*rhs(3,i);
+			out(0, i) = this._data[0]*rhs(0,i) + this._data[4]*rhs(1,i) + this._data[8 ]*rhs(2,i) + this._data[12]*rhs(3,i);
+			out(1, i) = this._data[1]*rhs(0,i) + this._data[5]*rhs(1,i) + this._data[9 ]*rhs(2,i) + this._data[13]*rhs(3,i);
+			out(2, i) = this._data[2]*rhs(0,i) + this._data[6]*rhs(1,i) + this._data[10]*rhs(2,i) + this._data[14]*rhs(3,i);
+			out(3, i) = this._data[3]*rhs(0,i) + this._data[7]*rhs(1,i) + this._data[11]*rhs(2,i) + this._data[15]*rhs(3,i);
 		}
 		return out;
 	}
 
 	template<typename E>																								
-	typename ldp_basic_vec4<typename type_promote<T,E>::type> operator * (const ldp_basic_vec<E,4>& rhs)const	
+	ldp_basic_vec4<typename type_promote<T,E>::type> operator * (const ldp_basic_vec<E,4>& rhs)const	
 	{																													
-		typename ldp_basic_vec4<typename type_promote<T,E>::type> out;									
-		out[0] = _data[0] * rhs[0] + _data[4] * rhs[1] + _data[8 ] * rhs[2] + _data[12] * rhs[3];
-		out[1] = _data[1] * rhs[0] + _data[5] * rhs[1] + _data[9 ] * rhs[2] + _data[13] * rhs[3];
-		out[2] = _data[2] * rhs[0] + _data[6] * rhs[1] + _data[10] * rhs[2] + _data[14] * rhs[3];
-		out[3] = _data[3] * rhs[0] + _data[7] * rhs[1] + _data[11] * rhs[2] + _data[15] * rhs[3];	
+		ldp_basic_vec4<typename type_promote<T,E>::type> out;									
+		out[0] = this._data[0] * rhs[0] + this._data[4] * rhs[1] + this._data[8 ] * rhs[2] + this._data[12] * rhs[3];
+		out[1] = this._data[1] * rhs[0] + this._data[5] * rhs[1] + this._data[9 ] * rhs[2] + this._data[13] * rhs[3];
+		out[2] = this._data[2] * rhs[0] + this._data[6] * rhs[1] + this._data[10] * rhs[2] + this._data[14] * rhs[3];
+		out[3] = this._data[3] * rhs[0] + this._data[7] * rhs[1] + this._data[11] * rhs[2] + this._data[15] * rhs[3];	
 		return out;																										
 	}
 	ldp_basic_mat4<T> operator * (const T& rhs)const										
@@ -939,7 +939,7 @@ public:
 	}
 	ldp_basic_mat4<T>& operator *= (const T& x)
 	{
-		for(size_t i=0; i<NUM_ELEMENTS; i++)
+		for(size_t i=0; i<this.NUM_ELEMENTS; i++)
 			(*this)[i] *= x;
 		return *this;
 	}

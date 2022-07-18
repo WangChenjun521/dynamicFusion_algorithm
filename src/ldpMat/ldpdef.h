@@ -217,7 +217,8 @@ namespace ldp
 	const float PI_S = 3.141592653589793f;
 	const double SQRT_TWO_D = 1.414213562373095;
 	const float SQRT_TWO_S = 1.414213562373095f;
-
+	const float LDP_CONST_PI = 3.141592653589793f;
+	
 	inline double eps(double x=1.0)
 	{
 		if(x == 1.0) return DOUBLE_EPS;
