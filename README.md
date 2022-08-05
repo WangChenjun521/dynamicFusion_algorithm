@@ -1,5 +1,5 @@
 # dynamicFusion_algorithm
-目前项目还没有完成，正在视图将windows 版的  https://github.com/dolphin-li/DynamicFusion.git 迁移到linux 平台
+目前项目还没有完成，正在试图将windows 版的  https://github.com/dolphin-li/DynamicFusion.git 迁移到linux 平台
 
 ## 依赖
 ### 安装cuda  
