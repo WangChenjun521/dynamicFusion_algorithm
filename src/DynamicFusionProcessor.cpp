@@ -6,10 +6,10 @@
 #include "Camera.h"
 #include "WarpField.h"
 #include "fmath.h"
-#include <eigen\Dense>
-#include <eigen\Geometry>
-#include "ObjMesh.h"
-#include "VolumeData.h"
+#include <Eigen/Dense>
+#include <Eigen/Geometry>
+#include "Renderable/ObjMesh.h"
+#include "mpu/VolumeData.h"
 #include "CpuGaussNewton.h"
 #include "GpuGaussNewtonSolver.h"
 #include "SparseVolume.h"
@@ -404,7 +404,7 @@ namespace dfusion
 		m_volume->load(volume_name);
 		int3 new_res = m_volume->getResolution();
 		if (old_res.x != new_res.x || old_res.y != new_res.y || old_res.z != new_res.z)
-			throw std::exception("error in loading volumes, size not matched with pre-allocated!");
+			throw std::logic_error("error in loading volumes, size not matched with pre-allocated!");
 		
 		std::string path, purename, ext;
 		ldp::fileparts(volume_name, path, purename, ext);
@@ -596,9 +596,9 @@ namespace dfusion
 
 				//checking nullspace
 				float det = A.determinant();
-				if (fabs(det) < std::numeric_limits<float>::epsilon() || _isnan(det))
+				if (fabs(det) < std::numeric_limits<float>::epsilon() || __isnan(det))
 				{
-					if (_isnan(det))
+					if (__isnan(det))
 						std::cout << "qnan" << std::endl;
 					else
 						std::cout << det << std::endl;

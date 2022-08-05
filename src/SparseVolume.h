@@ -2,9 +2,9 @@
 
 #include "definations.h"
 
-#include "voxelhash\voxel_hashing_internal.h"
+#include "VoxelHash/voxel_hashing_internal.h"
 #include <thrust/device_vector.h>
-#include "voxelhash\chunk.h"
+#include "VoxelHash/chunk.h"
 
 namespace dfusion
 {

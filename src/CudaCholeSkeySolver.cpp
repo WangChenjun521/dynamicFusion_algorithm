@@ -2,14 +2,14 @@
 #include <exception>
 #include "CudaBsrMatrix.h"
 #include <iostream>
-#include "ldpdef.h"
-#include <eigen\Sparse>
-#include <eigen\Dense>
+#include "ldpMat/ldpdef.h"
+#include <Eigen/Sparse>
+#include <Eigen/Dense>
 
 #define USE_CPU_PATH
 
 #define CHECK(exp, msg)\
-if (!(exp)){ throw std::exception(msg); }
+if (!(exp)){ throw std::logic_error(msg); }
 
 #pragma region --cpu path
 struct CudaCholeskeySolver_EigenContainter
@@ -115,7 +115,7 @@ struct CudaCholeskeySolver_EigenContainter
 	{
 		FILE* pFile = fopen(filename, "w");
 		if (!pFile)
-			throw std::exception("dumpSparseMatrix: create file failed!");
+			throw std::logic_error("dumpSparseMatrix: create file failed!");
 		for (int r = 0; r < A.outerSize(); r++)
 		{
 			int rs = A.outerIndexPtr()[r];

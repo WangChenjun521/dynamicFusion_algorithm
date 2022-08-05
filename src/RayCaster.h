@@ -2,6 +2,7 @@
 
 #include "definations.h"
 
+
 class Camera;
 
 namespace dfusion

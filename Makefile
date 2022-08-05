@@ -13,12 +13,14 @@ binary := pro
 # 定义头文件 库文件 和链接目标
 include_paths := /usr/local/cuda/include
 include_paths += src
+include_paths += /usr/local/include/eigen3
+
 
 library_paths := /usr/local/cuda/lib64
 link_librarys := cudart
 
 # 定义编译选项
-cpp_compile_flags := -m64 -fPIC -g -O0 -std=c++11 -lrealsense2
+cpp_compile_flags := -m64 -fPIC -g -O0 -std=c++11  -lrealsense2 -lstdc++fs
 cu_compile_flags := -m64 -g -O0 -std=c++11
 
 # 对头文件 库文件 和链接目标统一加-I -L -l
@@ -40,6 +42,7 @@ link_flags        := $(rpaths) $(library_paths) $(link_librarys)
 # $<  依赖项第一个
 # $^  依赖项所有
 # $?  $+
+
 objs/%.o : src/%.cpp
 	@mkdir -p $(dir $@)
 	@echo Compile $<
@@ -51,11 +54,12 @@ objs/%.cuo : src/%.cu
 	@echo Compile $<
 	@nvcc -c $< -o $@ $(cu_compile_flags)
 
+
 # 定义workspace/pro文件的编译
 $(workspace)/$(binary) : $(cpp_objs) $(cu_objs)
 	@mkdir -p $(dir $@)
 	@echo Link $@
-	@g++ $^ -o $@ $(link_flags)
+	@g++ $^ -o $@ $(link_flags) -DNDEBUG
 
 # 定义pro快捷编译指令,这里只发生编译，不执行
 pro : $(workspace)/$(binary)

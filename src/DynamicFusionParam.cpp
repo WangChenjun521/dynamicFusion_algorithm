@@ -131,7 +131,7 @@ namespace dfusion
 	{
 		std::ofstream stm(filename);
 		if (stm.fail())
-			throw std::exception("IO error: save param failed!");
+			throw std::logic_error("IO error: save param failed!");
 
 		/** *****************************************************
 		* tsdf volume related
@@ -247,7 +247,7 @@ namespace dfusion
 	{
 		std::ifstream stm(filename);
 		if (stm.fail())
-			throw std::exception("IO error: Param::load() failed!");
+			throw std::logic_error("IO error: Param::load() failed!");
 
 		std::string lineBuffer;
 		while (!stm.eof())

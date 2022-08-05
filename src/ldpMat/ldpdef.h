@@ -37,6 +37,9 @@ namespace ldp
 	/** *********************************************************************************
 	* Release assert
 	* **********************************************************************************/
+#define __CRT_WIDE(_String) L ## _String
+#define _CRT_WIDE(_String) __CRT_WIDE(_String)
+
 #ifdef NDEBUG
 	#ifdef  __cplusplus
 	extern "C" {
@@ -46,7 +49,8 @@ namespace ldp
 	}
 	#endif
 #endif
-	#define release_assert(_Expression) (void)( (!!(_Expression)) || (_wassert(_CRT_WIDE(#_Expression), _CRT_WIDE(__FILE__), __LINE__), 0) )
+	void _wassert(const wchar_t * _Message, const wchar_t *_File, unsigned _Line);
+	#define release_assert(_Expression) (void)( (!!(_Expression)) || (ldp::_wassert(_CRT_WIDE(#_Expression), _CRT_WIDE(__FILE__), __LINE__), 0) )
 
 
 	/** *********************************************************************************

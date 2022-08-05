@@ -3,6 +3,13 @@
 #include <GL/glu.h>
 #include "fmath.h"
 #include "ldpMat/Quaternion.h"
+
+#define __unix_fopen
+
+#ifdef __unix_fopen
+#define fopen_s(pFile,filename,mode) ((*(pFile))=fopen((filename),  (mode)))==NULL
+#endif
+
 Camera::Camera(void)
 {
 	isOrtho = false;
@@ -493,33 +500,34 @@ const Camera&  Camera::interpolateModelViewMatrixWith(const Camera& rhs, float s
 bool Camera::save(const char* fileName)const
 {
 	FILE* pFile=NULL;
-	int err = fopen_s(&pFile, fileName, "w");
+	int err = fopen_s(&pFile, fileName, "w");   //for windows
+
 	if(err) return false;
 
 	// the orthogonal flag
-	fprintf_s(pFile, "Orthogonal:%d\n", (int)isOrtho);
+	fprintf(pFile, "Orthogonal:%d\n", (int)isOrtho);
 
 	// the projection matrix
-	fprintf_s(pFile, "Projection Matrix:\n");
+	fprintf(pFile, "Projection Matrix:\n");
 	for(int i=0; i<4; i++)
 	{
 		for(int j=0; j<4; j++)
-			fprintf_s(pFile, "%f ", projection(i,j));
-		fprintf_s(pFile, "\n");
+			fprintf(pFile, "%f ", projection(i,j));
+		fprintf(pFile, "\n");
 	}
 
 	// the model view matrix
-	fprintf_s(pFile, "Model View Matrix:\n");
+	fprintf(pFile, "Model View Matrix:\n");
 	for(int i=0; i<4; i++)
 	{
 		for(int j=0; j<4; j++)
-			fprintf_s(pFile, "%f ", modelView(i,j));
-		fprintf_s(pFile, "\n");
+			fprintf(pFile, "%f ", modelView(i,j));
+		fprintf(pFile, "\n");
 	}
 
 	// the viewport
-	fprintf_s(pFile, "Viewport:\n");
-	fprintf_s(pFile, "%f %f %f %f\n", viewPortLeft, viewPortRight, viewPortTop, viewPortBottom);
+	fprintf(pFile, "Viewport:\n");
+	fprintf(pFile, "%f %f %f %f\n", viewPortLeft, viewPortRight, viewPortTop, viewPortBottom);
 
 	fclose(pFile);
 	return true;
@@ -532,31 +540,31 @@ bool Camera::load(const char* fileName)
 
 	// the orthogonal flag
 	int dummy = 0;
-	fscanf_s(pFile, "Orthogonal:%d\n", &dummy);
+	fscanf(pFile, "Orthogonal:%d\n", &dummy);
 	isOrtho = (dummy==1);
 
 	// the projection matrix
-	fscanf_s(pFile, "Projection Matrix:\n");
+	fscanf(pFile, "Projection Matrix:\n");
 	for(int i=0; i<4; i++)
 	{
 		for(int j=0; j<4; j++)
-			fscanf_s(pFile, "%f ", &projection(i,j));
-		fscanf_s(pFile, "\n");
+			fscanf(pFile, "%f ", &projection(i,j));
+		fscanf(pFile, "\n");
 	}
 
 	// the model view matrix
-	fscanf_s(pFile, "Model View Matrix:\n");
+	fscanf(pFile, "Model View Matrix:\n");
 	for(int i=0; i<4; i++)
 	{
 		for(int j=0; j<4; j++)
-			fscanf_s(pFile, "%f ", &modelView(i,j));
-		fscanf_s(pFile, "\n");
+			fscanf(pFile, "%f ", &modelView(i,j));
+		fscanf(pFile, "\n");
 	}
 	setModelViewMatrix(modelView);
 
 	// the viewport
-	fscanf_s(pFile, "Viewport:\n");
-	fscanf_s(pFile, "%f %f %f %f\n", &viewPortLeft, &viewPortRight, &viewPortTop, &viewPortBottom);
+	fscanf(pFile, "Viewport:\n");
+	fscanf(pFile, "%f %f %f %f\n", &viewPortLeft, &viewPortRight, &viewPortTop, &viewPortBottom);
 
 	fclose(pFile);
 	return true;

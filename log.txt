@@ -1,0 +1,112 @@
+Compile src/CudaBsrMatrix.cpp
+src/CudaBsrMatrix.cpp: In constructor ‘CudaBsrMatrix::CudaBsrMatrix(cusparseHandle_t, bool)’:
+src/CudaBsrMatrix.cpp:28:58: warning: ‘cusparseStatus_t cusparseCreateCsrgemm2Info(csrgemm2Info**)’ is deprecated: please use cusparseSpGEMM instead [-Wdeprecated-declarations]
+   28 |  cusparseCheck(cusparseCreateCsrgemm2Info(&m_csrgemm2info));
+      |                                                          ^
+In file included from src/CudaBsrMatrix.h:5,
+                 from src/CudaBsrMatrix.cpp:1:
+/usr/local/cuda/include/cusparse.h:3395:1: note: declared here
+ 3395 | cusparseCreateCsrgemm2Info(csrgemm2Info_t* info);
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/CudaBsrMatrix.cpp:28:58: warning: ‘cusparseStatus_t cusparseCreateCsrgemm2Info(csrgemm2Info**)’ is deprecated: please use cusparseSpGEMM instead [-Wdeprecated-declarations]
+   28 |  cusparseCheck(cusparseCreateCsrgemm2Info(&m_csrgemm2info));
+      |                                                          ^
+In file included from src/CudaBsrMatrix.h:5,
+                 from src/CudaBsrMatrix.cpp:1:
+/usr/local/cuda/include/cusparse.h:3395:1: note: declared here
+ 3395 | cusparseCreateCsrgemm2Info(csrgemm2Info_t* info);
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/CudaBsrMatrix.cpp: In destructor ‘CudaBsrMatrix::~CudaBsrMatrix()’:
+src/CudaBsrMatrix.cpp:35:58: warning: ‘cusparseStatus_t cusparseDestroyCsrgemm2Info(csrgemm2Info_t)’ is deprecated: please use cusparseSpGEMM instead [-Wdeprecated-declarations]
+   35 |  cusparseCheck(cusparseDestroyCsrgemm2Info(m_csrgemm2info));
+      |                                                          ^
+In file included from src/CudaBsrMatrix.h:5,
+                 from src/CudaBsrMatrix.cpp:1:
+/usr/local/cuda/include/cusparse.h:3399:1: note: declared here
+ 3399 | cusparseDestroyCsrgemm2Info(csrgemm2Info_t info);
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/CudaBsrMatrix.cpp:35:58: warning: ‘cusparseStatus_t cusparseDestroyCsrgemm2Info(csrgemm2Info_t)’ is deprecated: please use cusparseSpGEMM instead [-Wdeprecated-declarations]
+   35 |  cusparseCheck(cusparseDestroyCsrgemm2Info(m_csrgemm2info));
+      |                                                          ^
+In file included from src/CudaBsrMatrix.h:5,
+                 from src/CudaBsrMatrix.cpp:1:
+/usr/local/cuda/include/cusparse.h:3399:1: note: declared here
+ 3399 | cusparseDestroyCsrgemm2Info(csrgemm2Info_t info);
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/CudaBsrMatrix.cpp: In member function ‘void CudaBsrMatrix::multBsr_value(const CudaBsrMatrix&, CudaBsrMatrix&, float, const CudaBsrMatrix*, float) const’:
+src/CudaBsrMatrix.cpp:247:25: error: invalid conversion from ‘const CudaBsrMatrix*’ to ‘CudaBsrMatrix*’ [-fpermissive]
+  247 | { CudaBsrMatrix* D_temp=D;
+      |                         ^
+      |                         |
+      |                         const CudaBsrMatrix*
+src/CudaBsrMatrix.cpp:248:58: error: cannot convert ‘CudaBsrMatrix::Range’ to ‘const CudaBsrMatrix::Range*’
+  248 |  range().multBsr_value(B.range(), C, alpha, D == nullptr ? nullptr : D_temp->range(), beta);
+      |                                             ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                          |
+      |                                                          CudaBsrMatrix::Range
+In file included from src/CudaBsrMatrix.cpp:1:
+src/CudaBsrMatrix.h:55:17: note:   initializing argument 4 of ‘void CudaBsrMatrix::Range::multBsr_value(const CudaBsrMatrix::Range&, CudaBsrMatrix&, float, const CudaBsrMatrix::Range*, float) const’
+   55 |    const Range* D = nullptr, float beta = 0.f)const;
+      |    ~~~~~~~~~~~~~^~~~~~~~~~~
+src/CudaBsrMatrix.cpp: In member function ‘void CudaBsrMatrix::multBsrT_value(const CudaBsrMatrix&, CudaBsrMatrix&, float, const CudaBsrMatrix*, float) const’:
+src/CudaBsrMatrix.cpp:254:79: error: taking address of rvalue [-fpermissive]
+  254 |  range().multBsrT_value(B.range(), C, alpha, D==nullptr ? nullptr : &D->range(), beta);
+      |                                                                               ^
+src/CudaBsrMatrix.cpp: In member function ‘void CudaBsrMatrix::dump(std::string) const’:
+src/CudaBsrMatrix.cpp:303:28: warning: format ‘%e’ expects argument of type ‘double’, but argument 5 has type ‘int’ [-Wformat=]
+  303 |     fprintf(pFile, "%d %d %ef\n", rowbegin + r, rowbegin + r, 0);
+      |                           ~^                                  ~
+      |                            |                                  |
+      |                            double                             int
+      |                           %d
+src/CudaBsrMatrix.cpp: In member function ‘void CudaBsrMatrix::Range::multBsr_structure(const CudaBsrMatrix&, CudaBsrMatrix&, const CudaBsrMatrix*) const’:
+src/CudaBsrMatrix.cpp:349:74: warning: ‘cusparseStatus_t cusparseScsrgemm2_bufferSizeExt(cusparseHandle_t, int, int, int, const float*, cusparseMatDescr_t, int, const int*, const int*, cusparseMatDescr_t, int, const int*, const int*, const float*, cusparseMatDescr_t, int, const int*, const int*, csrgemm2Info_t, size_t*)’ is deprecated: please use cusparseSpGEMM instead [-Wdeprecated-declarations]
+  349 |   pBeta, B.m_desc, nnzD, D_rptr, D_cidx, A->m_csrgemm2info, &nBufferBytes));
+      |                                                                          ^
+In file included from src/CudaBsrMatrix.h:5,
+                 from src/CudaBsrMatrix.cpp:1:
+/usr/local/cuda/include/cusparse.h:3403:1: note: declared here
+ 3403 | cusparseScsrgemm2_bufferSizeExt(cusparseHandle_t         handle,
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/CudaBsrMatrix.cpp:349:74: warning: ‘cusparseStatus_t cusparseScsrgemm2_bufferSizeExt(cusparseHandle_t, int, int, int, const float*, cusparseMatDescr_t, int, const int*, const int*, cusparseMatDescr_t, int, const int*, const int*, const float*, cusparseMatDescr_t, int, const int*, const int*, csrgemm2Info_t, size_t*)’ is deprecated: please use cusparseSpGEMM instead [-Wdeprecated-declarations]
+  349 |   pBeta, B.m_desc, nnzD, D_rptr, D_cidx, A->m_csrgemm2info, &nBufferBytes));
+      |                                                                          ^
+In file included from src/CudaBsrMatrix.h:5,
+                 from src/CudaBsrMatrix.cpp:1:
+/usr/local/cuda/include/cusparse.h:3403:1: note: declared here
+ 3403 | cusparseScsrgemm2_bufferSizeExt(cusparseHandle_t         handle,
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/CudaBsrMatrix.cpp:362:63: warning: ‘cusparseStatus_t cusparseXcsrgemm2Nnz(cusparseHandle_t, int, int, int, cusparseMatDescr_t, int, const int*, const int*, cusparseMatDescr_t, int, const int*, const int*, cusparseMatDescr_t, int, const int*, const int*, cusparseMatDescr_t, int*, int*, csrgemm2Info_t, void*)’ is deprecated: please use cusparseSpGEMM instead [-Wdeprecated-declarations]
+  362 |   C.m_desc, C.bsrRowPtr(), &cnnz, A->m_csrgemm2info, workBufer));
+      |                                                               ^
+In file included from src/CudaBsrMatrix.h:5,
+                 from src/CudaBsrMatrix.cpp:1:
+/usr/local/cuda/include/cusparse.h:3495:1: note: declared here
+ 3495 | cusparseXcsrgemm2Nnz(cusparseHandle_t         handle,
+      | ^~~~~~~~~~~~~~~~~~~~
+src/CudaBsrMatrix.cpp:362:63: warning: ‘cusparseStatus_t cusparseXcsrgemm2Nnz(cusparseHandle_t, int, int, int, cusparseMatDescr_t, int, const int*, const int*, cusparseMatDescr_t, int, const int*, const int*, cusparseMatDescr_t, int, const int*, const int*, cusparseMatDescr_t, int*, int*, csrgemm2Info_t, void*)’ is deprecated: please use cusparseSpGEMM instead [-Wdeprecated-declarations]
+  362 |   C.m_desc, C.bsrRowPtr(), &cnnz, A->m_csrgemm2info, workBufer));
+      |                                                               ^
+In file included from src/CudaBsrMatrix.h:5,
+                 from src/CudaBsrMatrix.cpp:1:
+/usr/local/cuda/include/cusparse.h:3495:1: note: declared here
+ 3495 | cusparseXcsrgemm2Nnz(cusparseHandle_t         handle,
+      | ^~~~~~~~~~~~~~~~~~~~
+src/CudaBsrMatrix.cpp:374:80: warning: ‘cusparseStatus_t cusparseScsrgemm2(cusparseHandle_t, int, int, int, const float*, cusparseMatDescr_t, int, const float*, const int*, const int*, cusparseMatDescr_t, int, const float*, const int*, const int*, const float*, cusparseMatDescr_t, int, const float*, const int*, const int*, cusparseMatDescr_t, float*, const int*, int*, csrgemm2Info_t, void*)’ is deprecated: please use cusparseSpGEMM instead [-Wdeprecated-declarations]
+  374 |   C.m_desc, nullptr, C.bsrRowPtr(), C.bsrColIdx(), A->m_csrgemm2info, workBufer));
+      |                                                                                ^
+In file included from src/CudaBsrMatrix.h:5,
+                 from src/CudaBsrMatrix.cpp:1:
+/usr/local/cuda/include/cusparse.h:3519:1: note: declared here
+ 3519 | cusparseScsrgemm2(cusparseHandle_t         handle,
+      | ^~~~~~~~~~~~~~~~~
+src/CudaBsrMatrix.cpp:374:80: warning: ‘cusparseStatus_t cusparseScsrgemm2(cusparseHandle_t, int, int, int, const float*, cusparseMatDescr_t, int, const float*, const int*, const int*, cusparseMatDescr_t, int, const float*, const int*, const int*, const float*, cusparseMatDescr_t, int, const float*, const int*, const int*, cusparseMatDescr_t, float*, const int*, int*, csrgemm2Info_t, void*)’ is deprecated: please use cusparseSpGEMM instead [-Wdeprecated-declarations]
+  374 |   C.m_desc, nullptr, C.bsrRowPtr(), C.bsrColIdx(), A->m_csrgemm2info, workBufer));
+      |                                                                                ^
+In file included from src/CudaBsrMatrix.h:5,
+                 from src/CudaBsrMatrix.cpp:1:
+/usr/local/cuda/include/cusparse.h:3519:1: note: declared here
+ 3519 | cusparseScsrgemm2(cusparseHandle_t         handle,
+      | ^~~~~~~~~~~~~~~~~
+Makefile:47: recipe for target 'objs/CudaBsrMatrix.o' failed
+make: *** [objs/CudaBsrMatrix.o] Error 1

@@ -1,7 +1,9 @@
 #include "RayCaster.h"
 #include "TsdfVolume.h"
 #include "fmath.h"
-// #include "Camera.h"
+#include "ldpMat/ldpdef.h"
+#include "Camera.h"
+
 namespace dfusion
 {
 	RayCaster::RayCaster()

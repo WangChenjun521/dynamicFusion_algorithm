@@ -3,7 +3,7 @@
 #include "LMSolver.h"
 #include <helper_math.h>
 #include <set>
-#include "ldp_basic_mat.h"
+#include "ldpMat/ldp_basic_mat.h"
 #include <queue>
 namespace dfusion
 {
@@ -111,7 +111,7 @@ namespace dfusion
 				dumpVec(x, "D:/x.txt");
 				dumpVec(b, "D:/g.txt");
 				system("pause");
-				throw std::exception("linear solver failed");
+				throw std::logic_error("linear solver failed");
 			}
 		}
 
@@ -484,7 +484,7 @@ namespace dfusion
 			case 5:
 				return Tbx::Dual_quat_cu(q0, Tbx::Quat_cu(-q1.coeff3, -q1.coeff2, q1.coeff1, q1.coeff0))*0.5;
 			default:
-				throw std::exception("p_qk_p_alpha_func: out of range");
+				throw std::logic_error("p_qk_p_alpha_func: out of range");
 				break;
 			}
 		}
@@ -554,7 +554,7 @@ namespace dfusion
 					0, 0, 0, w0,
 					0, 0, 0, 0) * 2;
 			default:
-				throw std::exception("index out of range");
+				throw std::logic_error("index out of range");
 				return Tbx::Transfo::identity();
 			}
 		}
@@ -1330,7 +1330,7 @@ namespace dfusion
 		{
 			FILE* pFile = fopen(filename, "w");
 			if (!pFile)
-				throw std::exception("dumpSparseMatrix: create file failed!");
+				throw std::logic_error("dumpSparseMatrix: create file failed!");
 			for (int r = 0; r < A.outerSize(); r++)
 			{
 				int rs = A.outerIndexPtr()[r];
@@ -1345,7 +1345,7 @@ namespace dfusion
 		{
 			FILE* pFile = fopen(filename, "w");
 			if (!pFile)
-				throw std::exception("dumpVec: create file failed!");
+				throw std::logic_error("dumpVec: create file failed!");
 			for (int r = 0; r < A.size(); r++)
 			{
 				fprintf(pFile, "%ef\n", A[r]);
@@ -1357,7 +1357,7 @@ namespace dfusion
 		{
 			FILE* pFile = fopen(filename, "w");
 			if (!pFile)
-				throw std::exception("dumpMat: create file failed!");
+				throw std::logic_error("dumpMat: create file failed!");
 			for (int r = 0; r < A.rows(); r++)
 			{
 				for (int c = 0; c < A.cols(); c++)
@@ -1430,7 +1430,7 @@ namespace dfusion
 				{
 					const int v1 = edges[i][1];
 					if (edges[i][0] != v)
-						throw std::exception("edgeHeader error in find independent componnet debugging!");
+						throw std::logic_error("edgeHeader error in find independent componnet debugging!");
 					set_iter = verts.find(v1);
 					if (set_iter != verts.end())
 					{

@@ -5,15 +5,15 @@
 #define _USE_MATH_DEFINES
 #include <stdio.h>
 #include <math.h>
-
+#include <cstring>
 #ifdef WIN32
 #include <windows.h>
 #endif
 
-#include "glew.h"
+#include "GL/glew.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include "glut.h"
+#include <GL/glut.h>
 #include <map>
 #include <stdarg.h>
 

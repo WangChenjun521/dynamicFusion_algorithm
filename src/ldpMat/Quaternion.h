@@ -240,7 +240,7 @@ namespace ldp
 			if (abs(test - DataType(1.0)) < DataType(0.000001))
 			{
 				// heading = rotation about z-axis
-				euler[2] = (DataType)(-2.0*atan2(X, W));
+				euler[2] = (DataType)(-2.0*atan2(this.X, this.W));
 				// bank = rotation about x-axis
 				euler[0] = 0;
 				// attitude = rotation about y-axis

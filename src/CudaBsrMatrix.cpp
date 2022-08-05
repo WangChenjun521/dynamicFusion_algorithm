@@ -1,12 +1,12 @@
 #include "CudaBsrMatrix.h"
-#include "cudpp\ModerGpuWrapper.h"
+#include "cudpp/ModerGpuWrapper.h"
 
 static void cusparseCheck(cusparseStatus_t st, const char* msg = nullptr)
 {
 	if (CUSPARSE_STATUS_SUCCESS != st)
 	{
 		printf("cusparse error[%d]: %s", st, msg);
-		throw std::exception(msg);
+		throw std::logic_error(msg);
 	}
 }
 
@@ -169,7 +169,7 @@ void CudaBsrMatrix::transposeStructureTo(CudaBsrMatrix& rhs)const
 void CudaBsrMatrix::transposeValueTo(CudaBsrMatrix& rhs)const
 {
 	if (isSymbolic() || rhs.isSymbolic())
-		throw std::exception("CudaBsrMatrix::transposeValueTo(): symbolic matrix cannot touch values!");
+		throw std::logic_error("CudaBsrMatrix::transposeValueTo(): symbolic matrix cannot touch values!");
 	rhs.m_cusparseHandle = m_cusparseHandle;
 	rhs.resize(m_blocksInCol, m_blocksInRow, m_colsPerBlock, m_rowsPerBlock);
 	rhs.resize_nnzBlocks(m_nnzBlocks);
@@ -199,7 +199,7 @@ void CudaBsrMatrix::setRowFromBsrRowPtr(const int* bsrRowPtr)
 void CudaBsrMatrix::fromCsr(const int* csrRowPtr, const int* csrColIdx, const float* csrValue)
 {
 	if (isSymbolic())
-		throw std::exception("CudaBsrMatrix::fromCsr(): symbolic matrix cannot touch values!");
+		throw std::logic_error("CudaBsrMatrix::fromCsr(): symbolic matrix cannot touch values!");
 	if (blocksInRow() == 0)
 		return;
 
@@ -225,7 +225,7 @@ void CudaBsrMatrix::toCsr(DeviceArray<int>& csrRowPtr, DeviceArray<int>& csrColI
 	DeviceArray<float>& csrValue)const
 {
 	if (isSymbolic())
-		throw std::exception("CudaBsrMatrix::toCsr(): symbolic cannot touch values");
+		throw std::logic_error("CudaBsrMatrix::toCsr(): symbolic cannot touch values");
 	if (csrRowPtr.size() < rows() + 1)
 		csrRowPtr.create(rows() + 1);
 	if (csrColIdx.size() < nnz())
@@ -244,8 +244,8 @@ void CudaBsrMatrix::multBsr_structure(const CudaBsrMatrix& B, CudaBsrMatrix& C, 
 
 void CudaBsrMatrix::multBsr_value(const CudaBsrMatrix& B, CudaBsrMatrix& C, float alpha,
 	const CudaBsrMatrix* D, float beta)const
-{
-	range().multBsr_value(B.range(), C, alpha, D == nullptr ? nullptr : &D->range(), beta);
+{	CudaBsrMatrix* D_temp=D;
+	range().multBsr_value(B.range(), C, alpha, D == nullptr ? nullptr : D_temp->range(), beta);
 }
 
 void CudaBsrMatrix::multBsrT_value(const CudaBsrMatrix& B, CudaBsrMatrix& C, float alpha,
@@ -310,19 +310,19 @@ void CudaBsrMatrix::Range::multBsr_structure(const CudaBsrMatrix& B,
 	CudaBsrMatrix& C, const CudaBsrMatrix* D)const
 {
 	if (A == nullptr)
-		throw std::exception("CudaBsrMatrix::Range::multBsr_structure(): nullpointer exception");
+		throw std::logic_error("CudaBsrMatrix::Range::multBsr_structure(): nullpointer exception");
 	if (blockColBegin != 0 || blockColEnd != A->blocksInCol()
 		|| blockRowBegin != 0 || blockRowEnd != A->blocksInRow())
-		throw std::exception("CudaBsrMatrix::Range::multBsr_structure(): ranges not supported now");
+		throw std::logic_error("CudaBsrMatrix::Range::multBsr_structure(): ranges not supported now");
 	if (cols() != B.rows())
-		throw std::exception("CudaBsrMatrix::Range::multBsr_structure(): matrix size not matched");
+		throw std::logic_error("CudaBsrMatrix::Range::multBsr_structure(): matrix size not matched");
 	if (colsPerBlock() != B.rowsPerBlock())
-		throw std::exception("CudaBsrMatrix::Range::multBsr_structure(): block size not matched");
+		throw std::logic_error("CudaBsrMatrix::Range::multBsr_structure(): block size not matched");
 	if (D)
 	{
 		if (A->rowsPerBlock() != D->rowsPerBlock() || B.colsPerBlock() != D->colsPerBlock()
 			|| A->blocksInRow() != D->blocksInRow() || B.blocksInCol() != D->blocksInCol())
-			throw std::exception("CudaBsrMatrix::Range::multBsr_structure(): D size not matched!");
+			throw std::logic_error("CudaBsrMatrix::Range::multBsr_structure(): D size not matched!");
 	}
 
 	C.resize(blocksInRow(), B.blocksInCol(), rowsPerBlock(), B.colsPerBlock());

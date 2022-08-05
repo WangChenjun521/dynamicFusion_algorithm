@@ -36,7 +36,7 @@ shaders!
 #include <iostream>
 using namespace std;
 //#define GLEW_STATIC 
-#include <glew.h>
+#include <GL/glew.h>
 
 namespace cwc
 {

@@ -2,7 +2,7 @@
 #include "TsdfVolume.h"
 #include "GpuMesh.h"
 #include "GpuKdTree.h"
-#include "ldp_basic_mat.h"
+#include "ldpMat/ldp_basic_mat.h"
 namespace dfusion
 {
 	WarpField::WarpField()
@@ -221,7 +221,7 @@ namespace dfusion
 	{
 		FILE* pFile = fopen(filename, "wb");
 		if (!pFile)
-			throw std::exception(("save failed" + std::string(filename)).c_str());
+			throw std::logic_error(("save failed" + std::string(filename)).c_str());
 
 		fwrite(&m_rigidTransform, sizeof(m_rigidTransform), 1, pFile);
 		fwrite(m_numNodes, sizeof(m_numNodes), 1, pFile);
@@ -244,13 +244,13 @@ namespace dfusion
 	void WarpField::load(const char* filename)
 	{
 		if (m_volume == nullptr)
-			throw std::exception("Error: not initialzied before loading WarpField!");
+			throw std::logic_error("Error: not initialzied before loading WarpField!");
 
 		init(m_volume, m_param);
 
 		FILE* pFile = fopen(filename, "rb");
 		if (!pFile)
-			throw std::exception(("load failed" + std::string(filename)).c_str());
+			throw std::logic_error(("load failed" + std::string(filename)).c_str());
 	
 		memset(m_lastNumNodes, 0, sizeof(m_lastNumNodes));
 		fread(&m_rigidTransform, sizeof(m_rigidTransform), 1, pFile);
@@ -260,7 +260,7 @@ namespace dfusion
 		int ntmp = 0;
 		fread(&ntmp, sizeof(int), 1, pFile);
 		if (ntmp != tmp.size())
-			throw std::exception("size not matched in WarpField::load nodesQuatTransVw");
+			throw std::logic_error("size not matched in WarpField::load nodesQuatTransVw");
 		fread(tmp.data(), sizeof(float4), tmp.size(), pFile);
 		m_nodesQuatTransVw.upload(tmp);		
 		unBindNodesDqVwTexture();
@@ -270,7 +270,7 @@ namespace dfusion
 		int ntmpidx = 0;
 		fread(&ntmpidx, sizeof(int), 1, pFile);
 		if (ntmpidx != tmpIdx.size())
-			throw std::exception("size not matched in WarpField::load nodesGraph");
+			throw std::logic_error("size not matched in WarpField::load nodesGraph");
 		fread(tmpIdx.data(), sizeof(KnnIdx), tmpIdx.size(), pFile);
 		m_nodesGraph.upload(tmpIdx);
 
