@@ -46,7 +46,7 @@ link_flags        := $(rpaths) $(library_paths) $(link_librarys)
 objs/%.o : src/%.cpp
 	@mkdir -p $(dir $@)
 	@echo Compile $<
-	@g++ -c $< -o $@ $(cpp_compile_flags)
+	@g++ -c $< -o $@ $(cpp_compile_flags) -fpermissive
 
 # 定义cuda文件的编译方式
 objs/%.cuo : src/%.cu

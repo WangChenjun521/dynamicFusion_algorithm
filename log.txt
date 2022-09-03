@@ -34,22 +34,16 @@ In file included from src/CudaBsrMatrix.h:5,
  3399 | cusparseDestroyCsrgemm2Info(csrgemm2Info_t info);
       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~
 src/CudaBsrMatrix.cpp: In member function ‘void CudaBsrMatrix::multBsr_value(const CudaBsrMatrix&, CudaBsrMatrix&, float, const CudaBsrMatrix*, float) const’:
-src/CudaBsrMatrix.cpp:247:25: error: invalid conversion from ‘const CudaBsrMatrix*’ to ‘CudaBsrMatrix*’ [-fpermissive]
+src/CudaBsrMatrix.cpp:247:25: warning: invalid conversion from ‘const CudaBsrMatrix*’ to ‘CudaBsrMatrix*’ [-fpermissive]
   247 | { CudaBsrMatrix* D_temp=D;
       |                         ^
       |                         |
       |                         const CudaBsrMatrix*
-src/CudaBsrMatrix.cpp:248:58: error: cannot convert ‘CudaBsrMatrix::Range’ to ‘const CudaBsrMatrix::Range*’
-  248 |  range().multBsr_value(B.range(), C, alpha, D == nullptr ? nullptr : D_temp->range(), beta);
-      |                                             ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                                                          |
-      |                                                          CudaBsrMatrix::Range
-In file included from src/CudaBsrMatrix.cpp:1:
-src/CudaBsrMatrix.h:55:17: note:   initializing argument 4 of ‘void CudaBsrMatrix::Range::multBsr_value(const CudaBsrMatrix::Range&, CudaBsrMatrix&, float, const CudaBsrMatrix::Range*, float) const’
-   55 |    const Range* D = nullptr, float beta = 0.f)const;
-      |    ~~~~~~~~~~~~~^~~~~~~~~~~
+src/CudaBsrMatrix.cpp:248:85: warning: taking address of rvalue [-fpermissive]
+  248 |  range().multBsr_value(B.range(), C, alpha, D == nullptr ? nullptr : &D_temp->range(), beta);
+      |                                                                                     ^
 src/CudaBsrMatrix.cpp: In member function ‘void CudaBsrMatrix::multBsrT_value(const CudaBsrMatrix&, CudaBsrMatrix&, float, const CudaBsrMatrix*, float) const’:
-src/CudaBsrMatrix.cpp:254:79: error: taking address of rvalue [-fpermissive]
+src/CudaBsrMatrix.cpp:254:79: warning: taking address of rvalue [-fpermissive]
   254 |  range().multBsrT_value(B.range(), C, alpha, D==nullptr ? nullptr : &D->range(), beta);
       |                                                                               ^
 src/CudaBsrMatrix.cpp: In member function ‘void CudaBsrMatrix::dump(std::string) const’:
@@ -108,5 +102,31 @@ In file included from src/CudaBsrMatrix.h:5,
 /usr/local/cuda/include/cusparse.h:3519:1: note: declared here
  3519 | cusparseScsrgemm2(cusparseHandle_t         handle,
       | ^~~~~~~~~~~~~~~~~
-Makefile:47: recipe for target 'objs/CudaBsrMatrix.o' failed
-make: *** [objs/CudaBsrMatrix.o] Error 1
+Compile src/GpuKdTree.cpp
+In file included from src/definations.h:2,
+                 from src/GpuKdTree.h:3,
+                 from src/GpuKdTree.cpp:1:
+/usr/local/cuda/include/device_functions.h:54:2: warning: #warning "device_functions.h is an internal header file and must not be used directly.  This file will be removed in a future CUDA release.  Please use cuda_runtime_api.h or cuda_runtime.h instead." [-Wcpp]
+   54 | #warning "device_functions.h is an internal header file and must not be used directly.  This file will be removed in a future CUDA release.  Please use cuda_runtime_api.h or cuda_runtime.h instead."
+      |  ^~~~~~~
+In file included from /usr/local/cuda/include/driver_functions.h:54,
+                 from src/definations.h:3,
+                 from src/GpuKdTree.h:3,
+                 from src/GpuKdTree.cpp:1:
+/usr/local/cuda/include/crt/host_defines.h:54:2: warning: #warning "crt/host_defines.h is an internal header file and must not be used directly.  Please use cuda_runtime_api.h or cuda_runtime.h instead." [-Wcpp]
+   54 | #warning "crt/host_defines.h is an internal header file and must not be used directly.  Please use cuda_runtime_api.h or cuda_runtime.h instead."
+      |  ^~~~~~~
+In file included from src/dualquaternion/quat_cu.hpp:479,
+                 from src/dualquaternion/dual_quat_cu.hpp:4,
+                 from src/definations.h:13,
+                 from src/GpuKdTree.h:3,
+                 from src/GpuKdTree.cpp:1:
+/usr/local/cuda/include/host_defines.h:54:2: warning: #warning "host_defines.h is an internal header file and must not be used directly.  This file will be removed in a future CUDA release.  Please use cuda_runtime_api.h or cuda_runtime.h instead." [-Wcpp]
+   54 | #warning "host_defines.h is an internal header file and must not be used directly.  This file will be removed in a future CUDA release.  Please use cuda_runtime_api.h or cuda_runtime.h instead."
+      |  ^~~~~~~
+src/GpuKdTree.cpp:3:10: fatal error: PointTree.h: 没有那个文件或目录
+    3 | #include "PointTree.h"
+      |          ^~~~~~~~~~~~~
+compilation terminated.
+Makefile:47: recipe for target 'objs/GpuKdTree.o' failed
+make: *** [objs/GpuKdTree.o] Error 1

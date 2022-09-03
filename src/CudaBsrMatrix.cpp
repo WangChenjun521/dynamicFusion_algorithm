@@ -245,7 +245,7 @@ void CudaBsrMatrix::multBsr_structure(const CudaBsrMatrix& B, CudaBsrMatrix& C, 
 void CudaBsrMatrix::multBsr_value(const CudaBsrMatrix& B, CudaBsrMatrix& C, float alpha,
 	const CudaBsrMatrix* D, float beta)const
 {	CudaBsrMatrix* D_temp=D;
-	range().multBsr_value(B.range(), C, alpha, D == nullptr ? nullptr : D_temp->range(), beta);
+	range().multBsr_value(B.range(), C, alpha, D == nullptr ? nullptr : &D_temp->range(), beta);
 }
 
 void CudaBsrMatrix::multBsrT_value(const CudaBsrMatrix& B, CudaBsrMatrix& C, float alpha,
